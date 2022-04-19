@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./reducer/store";
 import { setUser, setToken } from "./reducer/app";
 import { meAPI } from "./api/index";
-// import Messenger from "./pages/Messenger";
+import io from "socket.io-client";
 import ChatPlace from "./pages/ChatPlace";
 
 
@@ -40,8 +40,7 @@ function App() {
       <Routes>
         {/* <Route path="/messenger" element={<Messenger/>} /> */}
        
-        <Route path="/chat" element={<ChatPlace/>} />
-  
+        <Route path="/chat" element={<ChatPlace/>} /> 
         <Route path="/signup" element={<SignUpPage/>} />
         <Route path="/login" element={<SignInPage/>} />
       </Routes>

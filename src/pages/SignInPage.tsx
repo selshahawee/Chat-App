@@ -62,7 +62,7 @@ export default function SignInPage(): JSX.Element {
       localStorage.setItem("auth-token", data.token);
       dispatch(setToken(data.token));
       saveUser(data.token);
-       navigate("/");
+       navigate("/chat");
     },
   });
 

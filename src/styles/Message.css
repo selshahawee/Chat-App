@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    align-items: flex-start;
+    padding-left: 10px;
   }
   
   .messageTop{
@@ -14,6 +16,7 @@
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
+    
   }
   
   .messageText{
@@ -27,10 +30,12 @@
   .messageBottom{
       font-size: 12px;
       margin-top: 10px;
+      
   }
   
   .message.own{
       align-items: flex-end;
+      padding-right: 10px;
   }
   
   .message.own .messageText{

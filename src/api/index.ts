@@ -31,3 +31,12 @@ export const meAPI = async (token: string): Promise<User> => {
     return response.data.user;
 }
 
+export const getConvoAPI = async ( token: string , user_id: string): Promise<User> => {
+    const response = await api.get("/conversations/:user_id", {
+        headers: {
+            Authorization: token 
+        },
+    });
+    return response.data.user;
+}
+
