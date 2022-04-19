@@ -14,7 +14,7 @@ ReactDOM.render(
     <Provider store={store}>
       
       <BrowserRouter>
-        
+        <NavBar/>
         <App />
         </BrowserRouter>
       </Provider>

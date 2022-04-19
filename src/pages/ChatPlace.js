@@ -16,6 +16,7 @@ import Topbar from "../components/TopBar";
 import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
+import Message from "../components/Message";
 const useStyles = makeStyles({
   contacts: {
     border: "2px #ffffff solid",
@@ -23,6 +24,7 @@ const useStyles = makeStyles({
     height: "80vh",
     marginTop: "50px",
     backgroundColor: "white",
+  
   },
   chatBox: {
     border: "2px #ffffff solid",
@@ -37,7 +39,16 @@ const useStyles = makeStyles({
   input: {
     marginRight: "50px",
   
-}
+  },
+  avatar: {
+    cursor: "pointer",
+    
+      "&:hover": {
+        backgroundColor: '#F5F5F5',
+      },
+    
+  },
+ 
  
 });
 
@@ -46,15 +57,16 @@ function ChatPlace() {
 
   return (
     <>
-      <Topbar />
+     
       <Grid container spacing={4} justifyContent="center">
         <Grid item  sm={5} md={3} className={classes.contacts}>
           <List
             sx={{ width: "100%", maxWidth: 360, bgcolor: "backgroundPaper" }}
           >
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems="flex-start" className={classes.avatar}>
               <ListItemAvatar>
                 <Avatar
+                  className={classes.avatar}
                   alt="Remy Sharp"
                   src="https://material-ui.com/static/images/avatar/1.jpg"
                 />
@@ -77,9 +89,10 @@ function ChatPlace() {
               />
             </ListItem>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems="flex-start" className={classes.avatar}>
               <ListItemAvatar>
                 <Avatar
+                  className={classes.avatar}
                   alt="Travis Howard"
                   src="https://material-ui.com/static/images/avatar/1.jpg"
                 />
@@ -105,6 +118,7 @@ function ChatPlace() {
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar
+                  className={classes.avatar}
                   alt="Cindy Baker"
                   src="https://material-ui.com/static/images/avatar/3.jpg"
                 />
@@ -130,6 +144,7 @@ function ChatPlace() {
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar
+                  className={classes.avatar}
                   alt="Travis Howard"
                   src="https://material-ui.com/static/images/avatar/1.jpg"
                 />
@@ -157,68 +172,11 @@ function ChatPlace() {
         <Grid item xs={12} sm={6}md={7}>
           <Grid container direction="column">
             <Grid className={classes.chatBox}>
-              <List>
-                <ListItem key="1">
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <ListItemIcon style={{ float: "right" }}>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="https://material-ui.com/static/images/avatar/1.jpg"
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        style={{ textAlign: "right" }}
-                        primary="Hey man, What's up ?"
-                      ></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <ListItemText
-                        style={{ textAlign: "right" }}
-                        secondary="09:30"
-                      ></ListItemText>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-                <ListItem key="2">
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <ListItemText
-                        style={{ textAlign: "left" }}
-                        primary="Hey, Iam Good! What about you ?"
-                      ></ListItemText>
-                      <ListItemIcon>
-                        <Avatar
-                          alt="Alice"
-                          src="https://material-ui.com/static/images/avatar/3.jpg"
-                        />
-                      </ListItemIcon>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <ListItemText
-                        style={{ textAlign: "left" }}
-                        secondary="09:31"
-                      ></ListItemText>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-                <ListItem key="3">
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <ListItemText
-                        style={{ textAlign: "right" }}
-                        primary="Cool. i am good, let's catch up!"
-                      ></ListItemText>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <ListItemText
-                        style={{ textAlign: "right" }}
-                        secondary="10:30"
-                      ></ListItemText>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-              </List>
+              <Message />
+              <Message own={true}/>
+              <Message />
+              <Message  own={true}/>
+              <Message/>
             </Grid>
 
             <Grid item sm={4} md={8} >
@@ -236,6 +194,7 @@ function ChatPlace() {
                     marginLeft: "350px"}}
                   >
                     <TextField
+                      varient="filled"
                       fullWidth
                       label="Message"
                       id="fullWidth"
@@ -243,9 +202,9 @@ function ChatPlace() {
                         endAdornment: (
                           <InputAdornment position="end">
                             {" "}
-                            <Fab color="primary" aria-label="add">
-                              <SendIcon />
-                            </Fab>
+                            
+                              <SendIcon size="small" color="primary" />
+                           
                           </InputAdornment>
                         ),
                       }}
