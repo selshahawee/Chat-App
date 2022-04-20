@@ -46,7 +46,7 @@ export default function SignUp(): JSX.Element {
       onSubmit: async (values) => {
         formik.resetForm();
       const data = await signUpAPI(values);
-      navigate("/login");
+      navigate("/");
       console.log(data);
     },
   });

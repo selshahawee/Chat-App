@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import { RootState } from "../reducer/store";
@@ -16,8 +16,10 @@ import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-import { SxProps } from "@mui/system";
-import io from "socket.io-client";
+import { setUser,setConversation } from "../reducer/app";
+import { io } from "socket.io-client";
+import axios from "axios";
+import { getConvoAPI } from "../api";
 
 const useStyles = makeStyles({
   contacts: {
@@ -62,16 +64,39 @@ const useStyles = makeStyles({
     border: "2px solid white",
   },
 });
-
+ 
 function ChatPlace() {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.app.user);
+  const conversation = useSelector((state: RootState) => state.app.conversation);
+  const token = useSelector((state: RootState) => state.app.token);
+  const [conversations, setConversations] = useState([]);
   const classes = useStyles();
   const navigate = useNavigate();
-  const inlineTypography: SxProps = { display: "inline" };
+  const socket  = useRef(io("ws://localhost:8900"))
   if (!user) {
-    navigate("/signup");
+    navigate("/");
   }
-  console.log({ user });
+ 
+  // async function getConversation(token: string , user_id: string) {
+  //   const conversation = await getConvoAPI(token, user_id);
+  //   console.log({ conversation })
+  //   dispatch(setConversation(conversation));
+  //   console.log({ conversation })
+  // }
+
+
+
+  async function getConversation(token: string, user_id: string) {
+    const conversation = await getConvoAPI(token, user_id);
+  }
+ 
+  
+    console.log({ conversation })
+
+  console.log({token})
+  console.log({ user })
+    
   return (
     <>
       <Grid container spacing={4} justifyContent="center">

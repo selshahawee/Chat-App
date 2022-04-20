@@ -1,5 +1,6 @@
 import axios from "axios";
-import { User } from "../types/User"
+import { User } from "../types/User";
+import { Conversation } from "../types/User";
 
 const URL = "http://localhost:8080/"
 
@@ -22,7 +23,7 @@ export const signInAPI = async (email:string, password:string) => {
     
 } 
 
-export const meAPI = async (token: string): Promise<User> => {
+export const getUser = async (token: string): Promise<User> => {
     const response = await api.get("/auth/me", {
         headers: {
             Authorization: token
@@ -31,12 +32,16 @@ export const meAPI = async (token: string): Promise<User> => {
     return response.data.user;
 }
 
-export const getConvoAPI = async ( token: string , user_id: string): Promise<User> => {
+export const getConvoAPI = async ( token: string , user_id: string): Promise<Conversation> => {
     const response = await api.get("/conversations/:user_id", {
+       
         headers: {
             Authorization: token 
         },
     });
+    console.log({ response });
     return response.data.user;
 }
+
+
 

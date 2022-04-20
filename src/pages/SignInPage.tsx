@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Image from "../images/signinlogo.png";
 import { useFormik } from "formik";
-import { meAPI, signInAPI } from "../api/index";
+import { getUser, signInAPI } from "../api/index";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../reducer/app";
@@ -41,7 +41,7 @@ export default function SignInPage(): JSX.Element {
   const dispatch = useDispatch();
 
   async function saveUser(token: string) {
-    const user = await meAPI(token);
+    const user = await getUser(token);
 
     dispatch(setUser(user));
     console.log({ user });
