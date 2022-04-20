@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
@@ -16,7 +16,9 @@ import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-import { SxProps } from '@mui/system';
+import { SxProps } from "@mui/system";
+import io from "socket.io-client";
+
 const useStyles = makeStyles({
   contacts: {
     border: "2px #ffffff solid",
@@ -24,7 +26,6 @@ const useStyles = makeStyles({
     height: "80vh",
     marginTop: "50px",
     backgroundColor: "white",
-  
   },
   chatBox: {
     border: "2px #ffffff solid",
@@ -38,38 +39,48 @@ const useStyles = makeStyles({
   },
   input: {
     marginRight: "50px",
-  
   },
   avatar: {
     cursor: "pointer",
-    
-      "&:hover": {
-        backgroundColor: '#F5F5F5',
-      },
-    
+
+    "&:hover": {
+      backgroundColor: "#F5F5F5",
+    },
   },
- 
- 
+  inputBox: {
+    
+    
+    justifyContent: "flex-end",
+    marginTop: "10px",
+    marginLeft: "350px",
+  },
+
+  textField: {
+    width: "60vh",
+    backgroundColor: "white",
+    borderRadius: "35px",
+    border: "2px solid white",
+  },
 });
 
 function ChatPlace() {
-  const user = useSelector((state:RootState ) => state.app.user);
+  const user = useSelector((state: RootState) => state.app.user);
   const classes = useStyles();
   const navigate = useNavigate();
-  const inlineTypography: SxProps = { display: 'inline'}
-  if(!user){
-    navigate ("/signup");
+  const inlineTypography: SxProps = { display: "inline" };
+  if (!user) {
+    navigate("/signup");
   }
-  console.log ({user})
+  console.log({ user });
   return (
     <>
-     
       <Grid container spacing={4} justifyContent="center">
         <Grid item sm={5} md={3} className={classes.contacts}>
-        <Typography variant="h6" gutterBottom> Messages </Typography>
-          <List
-           
-          >
+          <Typography variant="h6" gutterBottom>
+            {" "}
+            Messages{" "}
+          </Typography>
+          <List>
             <ListItem alignItems="flex-start" className={classes.avatar}>
               <ListItemAvatar>
                 <Avatar
@@ -83,7 +94,6 @@ function ChatPlace() {
                 secondary={
                   <React.Fragment>
                     <Typography
-                      
                       component="span"
                       variant="body2"
                       color="textPrimary"
@@ -109,8 +119,6 @@ function ChatPlace() {
                 secondary={
                   <React.Fragment>
                     <Typography
-                      
-
                       component="span"
                       variant="body2"
                       color="textPrimary"
@@ -136,7 +144,6 @@ function ChatPlace() {
                 secondary={
                   <React.Fragment>
                     <Typography
-                     
                       component="span"
                       variant="body2"
                       color="textPrimary"
@@ -162,7 +169,6 @@ function ChatPlace() {
                 secondary={
                   <React.Fragment>
                     <Typography
-                      
                       component="span"
                       variant="body2"
                       color="textPrimary"
@@ -176,43 +182,32 @@ function ChatPlace() {
             </ListItem>
           </List>
         </Grid>
-              
-        <Grid item xs={12} sm={6}md={7}>
+
+        <Grid item xs={12} sm={6} md={7}>
           <Grid container direction="column">
             <Grid className={classes.chatBox}>
-              <Message/>
+              <Message />
               <Message own={true} />
-              <Message/>
-              <Message  own={true}/>
-              <Message/>
+              <Message />
+              <Message own={true} />
+              <Message />
             </Grid>
 
-            <Grid item sm={4} md={8} >
+            <Grid item sm={4} md={8}>
               <Grid container justifyContent="center" alignItems="center">
                 <Grid item>
-                  <Box
-                    sx={{
-                      width: 500,
-                      maxWidth: "70%",
-                      borderRadius: "35px",
-                      border: "2px solid white",
-                      
-                      justifyContent: "flex-end",
-                      marginTop: "10px",
-                    marginLeft: "350px"}}
-                  >
+                  <Box className={classes.inputBox}>
                     <TextField
-                      variant="filled"
-                      fullWidth
-                      label="Message"
-                      id="fullWidth"
+                     
+                      label="Write something..."
+                      
+                     
+                      className={classes.textField}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
                             {" "}
-                            
-                              <SendIcon fontSize="small" color="primary" />
-                           
+                            <SendIcon fontSize="small" color="primary" />
                           </InputAdornment>
                         ),
                       }}
