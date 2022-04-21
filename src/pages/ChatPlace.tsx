@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
+// import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -81,30 +81,16 @@ function ChatPlace(): JSX.Element {
   }
  
 
-
-
-
-  
-
-  // useEffect(() => {
-  //   const getConversations = async (token: string , user_id:string  ) => {
-  //     const data = await getConvoAPI(token, user_id);
-  //     // @ts-ignore
-  //     setConversations(data);
-  //   };
-  //   getConversations(token , user_id);
-  // }, [token]);  
-
   useEffect(() => { 
      
 
-    const getConversation = async (token: string, user_id: string) => {
+    const getConversation = async (token: string) => {
      
       try {
-        const res = await getConvoAPI(token, user_id);
-        console.log({ res })
+        const res = await getConvoAPI(token);
+        console.log( res.conversations )
         setConversations(res.conversations)
-          console.log(res.conversations)
+          console.log(conversations)
       }
       catch (error) {
         console.log({ error })
@@ -115,7 +101,7 @@ function ChatPlace(): JSX.Element {
     }
     else {
       const user_id: string = user.id!
-      getConversation(token , user_id)
+      getConversation(token)
     }
  
 
@@ -123,7 +109,7 @@ function ChatPlace(): JSX.Element {
   
 
    
-       console.log({ conversation })
+       console.log({ conversations })
 
   console.log({token})
   console.log({ user })
