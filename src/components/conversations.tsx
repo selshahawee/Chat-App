@@ -23,10 +23,8 @@ const useStyles = makeStyles({
 function conversations({conversation  } : {conversation: any} ): JSX.Element  {
     const classes = useStyles();
  const user = useSelector((state: RootState) => state.app.user);
-
-    useEffect(() => {
-     
-    }, [conversation])
+console.log(conversation)
+    
   return (
       <div>
           <List>
@@ -39,7 +37,7 @@ function conversations({conversation  } : {conversation: any} ): JSX.Element  {
                 />
               </ListItemAvatar>
               <ListItemText
-                primary="Brunch this weekend?"
+                primary={conversation.name}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -47,9 +45,9 @@ function conversations({conversation  } : {conversation: any} ): JSX.Element  {
                       variant="body2"
                       color="textPrimary"
                     >
-                      Ali Connors
+                    {conversation.messages[0].body}
                     </Typography>
-                    {" — I'll be in your neighborhood doing errands this…"}
+                    
                   </React.Fragment>
                 }
               />

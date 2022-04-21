@@ -1,7 +1,9 @@
 import "../styles/Message.css";
 import { format } from "timeago.js";
 import React from "react";
-export default function Message ({ own=false }: {  own?: boolean })  { 
+export default function Message({ message, own = false }: { message: [], own?: boolean }) { 
+  
+  console.log(message);
 
   return (
     <div className={own ? "message own" : "message"}>

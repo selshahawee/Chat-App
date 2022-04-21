@@ -17,8 +17,6 @@ import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
 
-
-
 import { getConvoAPI } from "../api";
 import Conversations from "../components/conversations";
 
@@ -51,8 +49,6 @@ const useStyles = makeStyles({
     },
   },
   inputBox: {
-    
-    
     justifyContent: "flex-end",
     marginTop: "10px",
     marginLeft: "350px",
@@ -65,55 +61,45 @@ const useStyles = makeStyles({
     border: "2px solid white",
   },
 });
- 
+
 function ChatPlace(): JSX.Element {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.app.user);
-  const conversation = useSelector((state: RootState) => state.app.conversation);
+  const conversation = useSelector(
+    (state: RootState) => state.app.conversation
+  );
   const token = useSelector((state: RootState) => state.app.token);
   const [conversations, setConversations] = useState([]);
   const classes = useStyles();
   const navigate = useNavigate();
-  
-  
+
   if (!user) {
     navigate("/");
   }
- 
 
-  useEffect(() => { 
-     
-
+  useEffect(() => {
     const getConversation = async (token: string) => {
-     
       try {
         const res = await getConvoAPI(token);
-        console.log( res.conversations )
-        setConversations(res.conversations)
-          console.log(conversations)
-      }
-      catch (error) {
-        console.log({ error })
+
+        setConversations(res.conversations);
+      } catch (error) {
+        console.log({ error });
       }
     };
     if (!user) {
       navigate("/");
+    } else {
+      const user_id: string = user.id!;
+      getConversation(token);
     }
-    else {
-      const user_id: string = user.id!
-      getConversation(token)
-    }
- 
+  }, []);
 
-}, []);
-  
+      //@ts-ignore
+ const filter=  conversations.filter((conversation) => conversation.id === 1)  
+  console.log(conversations)
 
-   
-       console.log({ conversations })
 
-  console.log({token})
-  console.log({ user })
-    
   return (
     <>
       <Grid container spacing={4} justifyContent="center">
@@ -122,19 +108,18 @@ function ChatPlace(): JSX.Element {
             {" "}
             Messages{" "}
           </Typography>
-          {conversations.map((conversation) => (
-          <Conversations conversation={conversation} />
+          {conversations.map((conversation, index) => (
+            <Conversations conversation={conversation} key={index} />
           ))}
         </Grid>
 
         <Grid item xs={12} sm={6} md={7}>
           <Grid container direction="column">
             <Grid className={classes.chatBox}>
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
+             {/* @ts-ignore */}
+              {/* {conversations.filter((conversation) => conversation.id === 1)[0]["messages"].map((message:[]) => (
+                  <Message message={message}/>
+                ))} */}
             </Grid>
 
             <Grid item sm={4} md={8}>
@@ -142,10 +127,7 @@ function ChatPlace(): JSX.Element {
                 <Grid item>
                   <Box className={classes.inputBox}>
                     <TextField
-                     
                       label="Write something..."
-                      
-                     
                       className={classes.textField}
                       InputProps={{
                         endAdornment: (
@@ -168,4 +150,3 @@ function ChatPlace(): JSX.Element {
 }
 
 export default ChatPlace;
-
