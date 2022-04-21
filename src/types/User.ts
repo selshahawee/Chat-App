@@ -5,7 +5,7 @@ export type User    = {
     fullName: string;
     email: string;
     password: string;
-    id: string;
+    id?: string;
    
 }
  
@@ -20,8 +20,9 @@ export type Conversation = {
     id: string;
     token: string;
     user_id: string;
-    conversation: [];
+    conversations: [];
     messages: [];
+   
 }
 
  export type AppStateType = {

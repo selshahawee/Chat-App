@@ -16,10 +16,11 @@ import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-import { setUser,setConversation } from "../reducer/app";
 
-import axios from "axios";
+
+
 import { getConvoAPI } from "../api";
+import Conversations from "../components/conversations";
 
 const useStyles = makeStyles({
   contacts: {
@@ -97,11 +98,13 @@ function ChatPlace(): JSX.Element {
   useEffect(() => { 
      
 
-    const getConversation = async (token: string, user_id: any) => {
+    const getConversation = async (token: string, user_id: string) => {
      
       try {
         const res = await getConvoAPI(token, user_id);
         console.log({ res })
+        setConversations(res.conversations)
+          console.log(res.conversations)
       }
       catch (error) {
         console.log({ error })
@@ -111,7 +114,7 @@ function ChatPlace(): JSX.Element {
       navigate("/");
     }
     else {
-      const user_id= user.id
+      const user_id: string = user.id!
       getConversation(token , user_id)
     }
  
@@ -133,107 +136,9 @@ function ChatPlace(): JSX.Element {
             {" "}
             Messages{" "}
           </Typography>
-          <List>
-            <ListItem alignItems="flex-start" className={classes.avatar}>
-              <ListItemAvatar>
-                <Avatar
-                  className={classes.avatar}
-                  alt="Remy Sharp"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Brunch this weekend?"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      Ali Connors
-                    </Typography>
-                    {" — I'll be in your neighborhood doing errands this…"}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start" className={classes.avatar}>
-              <ListItemAvatar>
-                <Avatar
-                  className={classes.avatar}
-                  alt="Travis Howard"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Summer BBQ"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      to Scott, Alex, Jennifer
-                    </Typography>
-                    {" — Wish I could come, but I'm out of town this…"}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar
-                  className={classes.avatar}
-                  alt="Cindy Baker"
-                  src="https://material-ui.com/static/images/avatar/3.jpg"
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Oui Oui"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      Sandra Adams
-                    </Typography>
-                    {" — Do you have Paris recommendations? Have you ever…"}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar
-                  className={classes.avatar}
-                  alt="Travis Howard"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Summer BBQ"
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      to Scott, Alex, Jennifer
-                    </Typography>
-                    {" — Wish I could come, but I'm out of town this…"}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-          </List>
+          {conversations.map((conversation) => (
+          <Conversations conversation={conversation} />
+          ))}
         </Grid>
 
         <Grid item xs={12} sm={6} md={7}>
