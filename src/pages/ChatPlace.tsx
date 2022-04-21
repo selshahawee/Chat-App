@@ -78,12 +78,7 @@ function ChatPlace(): JSX.Element {
     navigate("/");
   }
  
-  // async function getConversation(token: string , user_id: string) {
-  //   const conversation = await getConvoAPI(token, user_id);
-  //   console.log({ conversation })
-  //   dispatch(setConversation(conversation));
-  //   console.log({ conversation })
-  // }
+
 
 
 

@@ -33,7 +33,7 @@ export const getUser = async (token: string): Promise<User> => {
 }
 
 export const getConvoAPI = async (token: string, user_id: string): Promise<Conversation> => {
-    //@ts-ignore
+    
     const response = await api.get("/message/conversations/" +user_id, {
         headers: {
             Authorization: token
@@ -41,9 +41,23 @@ export const getConvoAPI = async (token: string, user_id: string): Promise<Conve
     });
  
 
+ 
+
+
     
     return response.data;
 }
 
 
 
+   // post a conversation 
+export const postConvoAPI = async (token: string, user_id: string, message: string): Promise<Conversation> => {
+    const response = await api.post("/message/conversations/" +user_id, {
+        message
+    }, {
+        headers: {
+            Authorization: token
+        },
+    });
+    return response.data;
+}
