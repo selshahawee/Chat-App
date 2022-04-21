@@ -17,7 +17,7 @@ import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
 import { setUser,setConversation } from "../reducer/app";
-import { io } from "socket.io-client";
+
 import axios from "axios";
 import { getConvoAPI } from "../api";
 
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
   },
 });
  
-function ChatPlace() {
+function ChatPlace(): JSX.Element {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.app.user);
   const conversation = useSelector((state: RootState) => state.app.conversation);
@@ -73,7 +73,7 @@ function ChatPlace() {
   const [conversations, setConversations] = useState([]);
   const classes = useStyles();
   const navigate = useNavigate();
-  const socket  = useRef(io("ws://localhost:8900"))
+ 
   if (!user) {
     navigate("/");
   }
@@ -90,9 +90,22 @@ function ChatPlace() {
   async function getConversation(token: string, user_id: string) {
     const conversation = await getConvoAPI(token, user_id);
   }
- 
-  
-    console.log({ conversation })
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const res = await getConvoAPI(token,"2");
+        console.log({ res })
+      } 
+      catch (error) {
+        console.log({ error })
+      }
+    }
+    getConversation();
+  }, [user]);
+   
+      
+      
+      console.log({ conversation })
 
   console.log({token})
   console.log({ user })

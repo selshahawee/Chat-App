@@ -32,15 +32,17 @@ export const getUser = async (token: string): Promise<User> => {
     return response.data.user;
 }
 
-export const getConvoAPI = async ( token: string , user_id: string): Promise<Conversation> => {
-    const response = await api.get("/conversations/:user_id", {
-       
+export const getConvoAPI = async (token: string, user_id: string): Promise<Conversation> => {
+    //@ts-ignore
+    const response = await api.get("/message/conversations/" +user_id, {
         headers: {
-            Authorization: token 
+            Authorization: token
         },
     });
-    console.log({ response });
-    return response.data.user;
+ 
+
+    
+    return response.data;
 }
 
 
