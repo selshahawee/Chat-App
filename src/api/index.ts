@@ -39,12 +39,7 @@ export const getConvoAPI = async (token: string, user_id: string): Promise<Conve
             Authorization: token
         },
     });
- 
-
- 
-
-
-    
+  
     return response.data;
 }
 

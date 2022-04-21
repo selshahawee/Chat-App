@@ -73,7 +73,8 @@ function ChatPlace(): JSX.Element {
   const [conversations, setConversations] = useState([]);
   const classes = useStyles();
   const navigate = useNavigate();
- 
+  
+  
   if (!user) {
     navigate("/");
   }
@@ -82,25 +83,44 @@ function ChatPlace(): JSX.Element {
 
 
 
-  async function getConversation(token: string, user_id: string) {
-    const conversation = await getConvoAPI(token, user_id);
-  }
-  useEffect(() => {
-    const getConversation = async () => {
+  
+
+  // useEffect(() => {
+  //   const getConversations = async (token: string , user_id:string  ) => {
+  //     const data = await getConvoAPI(token, user_id);
+  //     // @ts-ignore
+  //     setConversations(data);
+  //   };
+  //   getConversations(token , user_id);
+  // }, [token]);  
+
+  useEffect(() => { 
+     
+
+    const getConversation = async (token: string, user_id: any) => {
+     
       try {
-        const res = await getConvoAPI(token,"2");
+        const res = await getConvoAPI(token, user_id);
         console.log({ res })
-      } 
+      }
       catch (error) {
         console.log({ error })
       }
+    };
+    if (!user) {
+      navigate("/");
     }
-    getConversation();
-  }, [user]);
+    else {
+      const user_id= user.id
+      getConversation(token , user_id)
+    }
+ 
+
+}, []);
+  
+
    
-      
-      
-      console.log({ conversation })
+       console.log({ conversation })
 
   console.log({token})
   console.log({ user })
@@ -257,3 +277,4 @@ function ChatPlace(): JSX.Element {
 }
 
 export default ChatPlace;
+
