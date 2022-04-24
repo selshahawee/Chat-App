@@ -2,25 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import { useDispatch, useSelector } from "react-redux";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
 import { RootState } from "../reducer/store";
 import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-
 import { getConvoAPI, getMessagesAPI } from "../api";
 import  ConversationComp  from "../components/Conversation";
 import { Conversation } from "../types";
-
+import { io } from "socket.io-client";
 const useStyles = makeStyles({
   contacts: {
     border: "2px #ffffff solid",
@@ -73,8 +66,21 @@ function ChatPlace():JSX.Element {
   const [conversations, setConversations] = useState<Conversation[]>();
   const [currentChat, setCurrentChat] = useState <Conversation>()
   const [messages, setMessages] = useState([]);
+
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const socket = io("ws://localhost:8900")
+
+  useEffect(() => {
+    
+    user&&socket.emit("addUser", user.id);
+    socket.on("getUsers", users => {
+      console.log(users)
+    }
+    )
+  } , [] )
+
 
   
   const getConversation = async (token: string) => {
