@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User } from "../types";
+import { Message, User } from "../types";
 import { Conversation } from "../types";
 
 const URL = "http://localhost:8080/"
@@ -45,16 +45,38 @@ export const getConvoAPI = async (token: string): Promise<Conversation[]> => {
 
 
    // post a conversation 
-export const postConvoAPI = async (token: string, user_id: string, message: string): Promise<Conversation> => {
-    const response = await api.post("/message/conversations/" +user_id, {
-        message
-    }, {
-        headers: {
-            Authorization: token
-        },
-    });
-    return response.data;
-}
+// export const postConvoAPI = async (token: string, user_id: string, message: string): Promise<Conversation> => {
+//     const response = await api.post("/message/conversations/" +user_id, {
+//         message
+//     }, {
+//         headers: {
+//             Authorization: token
+//         },
+//     });
+//     return response.data;
+// }
+
+// send chat message in conversation
+export const sendChatMessage = async (
+  token: string,
+//  payload: {}
+body:string,
+id:number
+): Promise<Message> => {
+  const response = await api.post(
+    "/message/new/",
+    {
+      body,
+      "conversationID":id,
+    },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  return response.data;
+};
 
  // get messages from conversations 
 
