@@ -81,7 +81,8 @@ function ChatPlace(): JSX.Element {
 
   useEffect(() => {
     
-    user&&socket.emit("addUser", user.id);
+    user && socket.emit("addUser", user.id);
+    user&&socket.emit("chat message", user.id);
     socket.on("getUsers", users => {
       console.log(users)
     }
