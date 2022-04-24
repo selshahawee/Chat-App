@@ -1,6 +1,6 @@
 import axios from "axios";
-import { User } from "../types/User";
-import { Conversation } from "../types/User";
+import { User } from "../types";
+import { Conversation } from "../types";
 
 const URL = "http://localhost:8080/"
 
@@ -10,7 +10,7 @@ const api = axios.create(
     }); 
 
 
-export const signUpAPI = async (user: User) => {
+export const signUpAPI = async (user:{email:string, password:string, fullName:string }) => {
     const response = await api.post("/auth/signup", user);
     return response.data;
 
@@ -32,15 +32,15 @@ export const getUser = async (token: string): Promise<User> => {
     return response.data.user;
 }
 
-export const getConvoAPI = async (token: string): Promise<Conversation> => {
-  console.log("get convo api");
+export const getConvoAPI = async (token: string): Promise<Conversation[]> => {
+  
   const response = await api.get("message/conversations/", {
     headers: {
       Authorization: token,
     },
   });
-  console.log({ response });
-  return response.data
+  
+  return response.data.conversations
 };
 
 
@@ -55,3 +55,20 @@ export const postConvoAPI = async (token: string, user_id: string, message: stri
     });
     return response.data;
 }
+
+ // get messages from conversations 
+
+    export const getMessagesAPI = async (token: string, conversation_id: string): Promise<Conversation> => {
+        const response = await api.get("/message/conversation/"+conversation_id, {
+            
+            
+            headers: {
+                Authorization: token,
+            },
+           
+        });
+       
+        console.log({ response });
+        return response.data;
+         
+    }

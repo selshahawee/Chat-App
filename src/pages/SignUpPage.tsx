@@ -47,7 +47,7 @@ export default function SignUp(): JSX.Element {
         formik.resetForm();
       const data = await signUpAPI(values);
       navigate("/");
-      console.log(data);
+     
     },
   });
 

@@ -1,9 +1,10 @@
 import "../styles/Message.css";
 import { format } from "timeago.js";
 import React from "react";
-export default function Message({ message, own = false }: { message: [], own?: boolean }) { 
+import { Message } from "../types";
+export default function MessageComp({ message, own = false }: { message: Message, own?: boolean }) { 
   
-  console.log(message);
+ 
 
   return (
     <div className={own ? "message own" : "message"}>
@@ -13,10 +14,10 @@ export default function Message({ message, own = false }: { message: [], own?: b
           src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
           alt=""
         />
-              <p className="messageText">Lorem ipsum dolor sit amet consectetur 
+              <p className="messageText">{message.body} 
               </p>
       </div>
-      <div className="messageBottom">1 hour ago</div>
+      <div className="messageBottom">{message.created_at}</div>
     </div>
   );
 }

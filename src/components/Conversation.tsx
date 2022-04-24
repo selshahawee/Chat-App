@@ -20,10 +20,10 @@ const useStyles = makeStyles({
 
   
 
-function conversations({conversation  } : {conversation: any} ): JSX.Element  {
+function Conversation({conversation  } : {conversation: any} ): JSX.Element  {
     const classes = useStyles();
  const user = useSelector((state: RootState) => state.app.user);
-console.log(conversation)
+
     
   return (
       <div>
@@ -59,4 +59,4 @@ console.log(conversation)
   )
 }
 
-export default conversations
+export default Conversation

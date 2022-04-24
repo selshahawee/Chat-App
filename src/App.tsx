@@ -19,16 +19,17 @@ function App() {
 
   async function saveUser(token: string) {
     const user = await getUser(token);
-
+    console.log({user})
     dispatch(setUser(user));
     
   }
   
   useEffect(() => {
     const tokenLocalStorage = localStorage.getItem("auth-token");
-   
+    console.log(tokenLocalStorage)
     if (tokenLocalStorage) {
       dispatch(setToken(tokenLocalStorage));
+      console.log({ tokenLocalStorage});
       saveUser(tokenLocalStorage);
     }
   }, []);

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-// import ListItemAvatar from "@mui/material/ListItemAvatar";
+
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -17,8 +17,9 @@ import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
 
-import { getConvoAPI } from "../api";
-import Conversations from "../components/conversations";
+import { getConvoAPI, getMessagesAPI } from "../api";
+import  ConversationComp  from "../components/Conversation";
+import { Conversation } from "../types";
 
 const useStyles = makeStyles({
   contacts: {
@@ -62,42 +63,60 @@ const useStyles = makeStyles({
   },
 });
 
-function ChatPlace(): JSX.Element {
+function ChatPlace():JSX.Element {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.app.user);
   const conversation = useSelector(
     (state: RootState) => state.app.conversation
   );
   const token = useSelector((state: RootState) => state.app.token);
-  const [conversations, setConversations] = useState([]);
+  const [conversations, setConversations] = useState<Conversation[]>();
+  const [currentChat, setCurrentChat] = useState <Conversation>()
+  const [messages, setMessages] = useState([]);
   const classes = useStyles();
   const navigate = useNavigate();
 
-  if (!user) {
-    navigate("/");
-  }
-
+  
+  const getConversation = async (token: string) => {
+    try {
+      const res = await getConvoAPI(token);
+      console.log({res})
+      setConversations(res);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
   useEffect(() => {
-    const getConversation = async (token: string) => {
-      try {
-        const res = await getConvoAPI(token);
-
-        setConversations(res.conversations);
-      } catch (error) {
-        console.log({ error });
-      }
-    };
-    if (!user) {
+    
+    if (!token) {
+      console.log({user})
       navigate("/");
     } else {
-      const user_id: string = user.id!;
+     
       getConversation(token);
     }
   }, []);
 
-      //@ts-ignore
- const filter=  conversations.filter((conversation) => conversation.id === 1)  
-  console.log(conversations)
+
+  // useEffect(() => {
+  //   const getMessages = async (token: string) => {
+  //     try { 
+        
+  //       const res = await getMessagesAPI(token, currentChat.id);
+  //       console.log({ currentChat })
+       
+  //       setMessages(res.data);
+  //       console.log(res.data);
+  //     } catch (error) {
+  //       console.log({ error });
+  //     }
+  //   };
+  //   getMessages(token);
+  // }, [ currentChat ]) 
+
+ 
+
+
 
 
   return (
@@ -108,18 +127,22 @@ function ChatPlace(): JSX.Element {
             {" "}
             Messages{" "}
           </Typography>
-          {conversations.map((conversation, index) => (
-            <Conversations conversation={conversation} key={index} />
+          
+          {conversations&&conversations.map((conversation, index) => (
+            
+            <div onClick={() => { setCurrentChat(conversation); console.log(conversation) } } key={index} >
+              
+             <ConversationComp conversation={conversation}  />
+           </div>
           ))}
         </Grid>
 
         <Grid item xs={12} sm={6} md={7}>
           <Grid container direction="column">
             <Grid className={classes.chatBox}>
-             {/* @ts-ignore */}
-              {/* {conversations.filter((conversation) => conversation.id === 1)[0]["messages"].map((message:[]) => (
-                  <Message message={message}/>
-                ))} */}
+             {currentChat&&currentChat.messages.map((message,index)=>(
+               <Message message={message} own={user?user.id===message.user.id : false }/>
+             ))}
             </Grid>
 
             <Grid item sm={4} md={8}>

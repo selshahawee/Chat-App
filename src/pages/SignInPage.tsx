@@ -44,7 +44,7 @@ export default function SignInPage(): JSX.Element {
     const user = await getUser(token);
 
     dispatch(setUser(user));
-    console.log({ user });
+    
   }
 
   let navigate = useNavigate();
