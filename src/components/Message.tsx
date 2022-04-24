@@ -11,13 +11,13 @@ export default function MessageComp({ message, own = false }: { message: Message
       <div className="messageTop">
         <img
           className="messageImg"
-          src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+          src={message.user.image}
           alt=""
         />
               <p className="messageText">{message.body} 
               </p>
       </div>
-      <div className="messageBottom">{message.created_at}</div>
+      <div className="messageBottom">{format(message.created_at)}</div>
     </div>
   );
 }

@@ -44,7 +44,6 @@ export default function SignInPage(): JSX.Element {
     const user = await getUser(token);
 
     dispatch(setUser(user));
-    
   }
 
   let navigate = useNavigate();
@@ -56,13 +55,13 @@ export default function SignInPage(): JSX.Element {
     },
 
     onSubmit: async (values) => {
-      formik.resetForm();
       const data = await signInAPI(values.email, values.password);
 
       localStorage.setItem("auth-token", data.token);
       dispatch(setToken(data.token));
       saveUser(data.token);
-       navigate("/chat");
+      formik.resetForm();
+      navigate("/chat");
     },
   });
 

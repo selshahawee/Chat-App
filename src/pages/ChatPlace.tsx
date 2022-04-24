@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import { useFormik , Form} from "formik";
+import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +12,14 @@ import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-import { getConvoAPI, getMessagesAPI } from "../api";
-import  ConversationComp  from "../components/Conversation";
-import { Conversation } from "../types";
+
 import { io } from "socket.io-client";
+
+import { getConvoAPI, getMessagesAPI,sendChatMessage } from "../api";
+import ConversationComp from "../components/Conversation";
+import { Conversation } from "../types";
+import { IconButton } from "@mui/material";
+
 const useStyles = makeStyles({
   contacts: {
     border: "2px #ffffff solid",
@@ -56,7 +62,8 @@ const useStyles = makeStyles({
   },
 });
 
-function ChatPlace():JSX.Element {
+function ChatPlace(): JSX.Element {
+ 
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.app.user);
   const conversation = useSelector(
@@ -64,7 +71,7 @@ function ChatPlace():JSX.Element {
   );
   const token = useSelector((state: RootState) => state.app.token);
   const [conversations, setConversations] = useState<Conversation[]>();
-  const [currentChat, setCurrentChat] = useState <Conversation>()
+  const [currentChat, setCurrentChat] = useState<Conversation>();
   const [messages, setMessages] = useState([]);
 
   const classes = useStyles();
@@ -86,83 +93,112 @@ function ChatPlace():JSX.Element {
   const getConversation = async (token: string) => {
     try {
       const res = await getConvoAPI(token);
-      console.log({res})
+      console.log({ res });
       setConversations(res);
     } catch (error) {
       console.log({ error });
     }
   };
   useEffect(() => {
-    
     if (!token) {
-      console.log({user})
+      console.log({ user });
       navigate("/");
     } else {
-     
       getConversation(token);
     }
   }, []);
 
+  const formik = useFormik({
+    initialValues: {
+      body: "",
+    },
 
-  // useEffect(() => {
-  //   const getMessages = async (token: string) => {
-  //     try { 
-        
-  //       const res = await getMessagesAPI(token, currentChat.id);
-  //       console.log({ currentChat })
-       
-  //       setMessages(res.data);
-  //       console.log(res.data);
-  //     } catch (error) {
-  //       console.log({ error });
-  //     }
-  //   };
-  //   getMessages(token);
-  // }, [ currentChat ]) 
-
- 
-
-
-
+    onSubmit: async (values) => {
+      try {
+        console.log(values);
+        console.log(conversation);
+        console.log(currentChat);
+        // const payload = {
+        //   "body": values.body,
+        //   "conversationId": currentChat?.id
+        // }
+        const data = await sendChatMessage(token, values.body, currentChat!.id);
+        formik.resetForm();
+        getConversation(token);
+      } catch (error) {
+        console.log({ error });
+      }
+    },
+  }); 
 
   return (
     <>
       <Grid container spacing={4} justifyContent="center">
         <Grid item sm={5} md={3} className={classes.contacts}>
           <Typography variant="h6" gutterBottom>
-            {" "}
-            Messages{" "}
+            Messages
           </Typography>
-          
-          {conversations&&conversations.map((conversation, index) => (
-            
-            <div onClick={() => { setCurrentChat(conversation); console.log(conversation) } } key={index} >
-              
-             <ConversationComp conversation={conversation}  />
-           </div>
-          ))}
+
+          {conversations ? (
+            conversations.length &&
+            conversations.map((conversation, index) => (
+              <div
+                onClick={() => {
+                  setCurrentChat(conversation);
+                  console.log(conversation);
+                }}
+                key={index}
+              >
+                <ConversationComp conversation={conversation} />
+              </div>
+            ))
+          ) : (
+            <Typography>No Messages</Typography>
+          )}
         </Grid>
 
         <Grid item xs={12} sm={6} md={7}>
           <Grid container direction="column">
             <Grid className={classes.chatBox}>
-             {currentChat&&currentChat.messages.map((message,index)=>(
-               <Message message={message} own={user?user.id===message.user.id : false }/>
-             ))}
+              {currentChat ? (
+                currentChat.messages.length &&
+                currentChat.messages.map((message, index) => (
+                  <Message
+                    message={message}
+                    own={user ? user.id === message.user.id : false}
+                  />
+                ))
+              ) : (
+                <Typography>No Chat</Typography>
+              )}
             </Grid>
 
             <Grid item sm={4} md={8}>
               <Grid container justifyContent="center" alignItems="center">
                 <Grid item>
-                  <Box className={classes.inputBox}>
+                  <Box
+                    component="form"
+                    
+                    // as="form"
+                    onSubmit={(e) =>
+                      formik.handleSubmit(e as React.FormEvent<HTMLFormElement>)
+                    }
+                    // onSubmit={formik.handleSubmit}
+                    className={classes.inputBox}
+                  >
                     <TextField
+                      name="body"
+                      onChange={formik.handleChange}
+                      value={formik.values.body}
+                      autoFocus
                       label="Write something..."
                       className={classes.textField}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            {" "}
-                            <SendIcon fontSize="small" color="primary" />
+                            <IconButton type="submit">
+                              <SendIcon fontSize="small" color="primary" />
+                            </IconButton>
                           </InputAdornment>
                         ),
                       }}

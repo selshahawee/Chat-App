@@ -5,6 +5,7 @@ export type User = {
   email: string;
   password: string;
   id: string;
+  image: string;
 };
 
 export type Token = string;
