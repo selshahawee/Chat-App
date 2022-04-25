@@ -12,13 +12,11 @@ import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-import Slide from '@mui/material/Slide';
-import { io } from "socket.io-client";
-import PropTypes from 'prop-types';
+import { io, Socket } from "socket.io-client";
 import { getConvoAPI, getMessagesAPI,sendChatMessage } from "../api";
 import ConversationComp from "../components/Conversation";
 import { Conversation } from "../types";
-import { IconButton, useScrollTrigger } from "@mui/material";
+import { IconButton} from "@mui/material";
 
 const useStyles = makeStyles({
   contacts: {
@@ -67,7 +65,7 @@ const useStyles = makeStyles({
 function ChatPlace(): JSX.Element {
 
   
-  const dispatch = useDispatch();
+  
   const user = useSelector((state: RootState) => state.app.user);
   const conversation = useSelector(
     (state: RootState) => state.app.conversation
@@ -76,21 +74,27 @@ function ChatPlace(): JSX.Element {
   const [conversations, setConversations] = useState<Conversation[]>();
   const [currentChat, setCurrentChat] = useState<Conversation>();
   const [messages, setMessages] = useState([]);
-
+  const [socket, setSocket] = useState<Socket>(io('http://localhost:7070/'));
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const socket = io("ws://localhost:8900")
+
+  
+
+
+ 
 
   useEffect(() => {
-    
-    user && socket.emit("addUser", user.id);
-    user&&socket.emit("chat message", user.id);
-    socket.on("getUsers", users => {
-      console.log(users)
-    }
-    )
-  } , [] )
+    socket.on("updateMessages", (data) => {
+      setCurrentChat((curr) => {
+        if (curr) {
+          console.log({ curr });
+          return { ...curr, messages: [...curr.messages, data] };
+        }
+      });
+    });
+  
+  } , [socket] )
 
 
   
@@ -119,16 +123,16 @@ function ChatPlace(): JSX.Element {
 
     onSubmit: async (values) => {
       try {
-        console.log(values);
-        console.log(conversation);
-        console.log(currentChat);
-        // const payload = {
-        //   "body": values.body,
-        //   "conversationId": currentChat?.id
-        // }
-        const data = await sendChatMessage(token, values.body, currentChat!.id);
-        formik.resetForm();
-        getConversation(token);
+        if (currentChat && user) {
+          const data = await sendChatMessage(token, values.body, currentChat.id);
+          socket.emit("privateMessage", {
+            message: values.body,
+            userId: user.id,
+            conversationId: currentChat.id,
+          });
+          formik.resetForm();
+          getConversation(token);
+        }
       } catch (error) {
         console.log({ error });
       }
@@ -151,6 +155,7 @@ function ChatPlace(): JSX.Element {
               <div
                 onClick={() => {
                   setCurrentChat(conversation);
+                  socket.emit('joinConversation', conversation.id);
                   console.log(conversation);
                 }}
                 key={index}
