@@ -31,9 +31,9 @@ const useStyles = makeStyles({
   chatBox: {
     border: "2px #ffffff solid",
     backgroundColor: "white",
-    height: "100%",
+    height: "80vh",
     flexWrap: "nowrap",
-    
+    overflow: "auto",
     padding: "5px",
     marginTop: "35px",
     marginLeft: "40px",
@@ -119,13 +119,6 @@ function ChatPlace(): JSX.Element {
 
     onSubmit: async (values) => {
       try {
-        console.log(values);
-        console.log(conversation);
-        console.log(currentChat);
-        // const payload = {
-        //   "body": values.body,
-        //   "conversationId": currentChat?.id
-        // }
         const data = await sendChatMessage(token, values.body, currentChat!.id);
         formik.resetForm();
         getConversation(token);
