@@ -22,22 +22,27 @@ const useStyles = makeStyles({
   contacts: {
     border: "2px #ffffff solid",
     borderRadius: "35px",
-    height: "80vh",
-    overflow:"auto",
+    height: "75vh",
+    overflow: "auto",
     marginTop: "50px",
     backgroundColor: "white",
   },
   chatBox: {
     border: "2px #ffffff solid",
     backgroundColor: "white",
-    height: "80vh",
-    flexWrap: "nowrap",
+    height: "60vh",
+    // flexWrap: "nowrap",
     overflow: "auto",
     padding: "5px",
     marginTop: "35px",
     // marginLeft: "40px",
     borderRadius: "35px",
-    
+  },
+  chatBoxContainer: {
+    border: "2px #ffffff solid",
+    backgroundColor: "white",
+    borderRadius: "35px",
+    marginTop: "35px",
   },
   input: {
     marginRight: "50px",
@@ -54,7 +59,7 @@ const useStyles = makeStyles({
     marginTop: "10px",
     // marginLeft: "350px",
   },
-  inputBoxGrid:{
+  inputBoxGrid: {
     flexGrow: 1,
   },
 
@@ -158,7 +163,7 @@ function ChatPlace(): JSX.Element {
               <div
                 onClick={() => {
                   setCurrentChat(conversation);
-                  socket.emit('joinConversation', conversation.id);
+                  socket.emit("joinConversation", conversation.id);
                   console.log(conversation);
                 }}
                 key={index}
@@ -172,7 +177,7 @@ function ChatPlace(): JSX.Element {
         </Grid>
 
         <Grid item xs={9} sm={6} md={6}>
-          <Grid container direction="column">
+          <Grid container direction="column" className={classes.chatBoxContainer}>
             <Grid item className={classes.chatBox}>
               {currentChat ? (
                 currentChat.messages.length &&
