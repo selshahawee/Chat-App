@@ -25,6 +25,7 @@ const useStyles = makeStyles({
     border: "2px #ffffff solid",
     borderRadius: "35px",
     height: "80vh",
+    overflow:"auto",
     marginTop: "50px",
     backgroundColor: "white",
   },
@@ -51,13 +52,13 @@ const useStyles = makeStyles({
     },
   },
   inputBox: {
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     marginTop: "10px",
     marginLeft: "350px",
   },
 
   textField: {
-    width: "60vh",
+    // width: "60vh",
     backgroundColor: "white",
     borderRadius: "35px",
     border: "2px solid white",
@@ -133,7 +134,7 @@ function ChatPlace(): JSX.Element {
  
     <>
       <Grid container spacing={4} justifyContent="center">
-        <Grid item sm={5} md={3} className={classes.contacts}>
+        <Grid item xs={3} sm={6} md={3} className={classes.contacts}>
           <Typography variant="h6" gutterBottom>
             Messages
           </Typography>
@@ -156,10 +157,10 @@ function ChatPlace(): JSX.Element {
           )}
         </Grid>
         
-        <Grid item xs={12} sm={6} md={7}>
+        <Grid item xs={9} sm={6} md={9}>
           <Grid container direction="column">
           
-            <Grid className={classes.chatBox}>
+            <Grid item className={classes.chatBox}>
               {currentChat ? (
                 currentChat.messages.length &&
                 currentChat.messages.map((message, index) => (
@@ -173,7 +174,7 @@ function ChatPlace(): JSX.Element {
               )}
             </Grid>
           
-            <Grid item sm={4} md={8}>
+            <Grid item >
               <Grid container justifyContent="center" alignItems="center">
                 <Grid item>
                   <Box
@@ -191,6 +192,7 @@ function ChatPlace(): JSX.Element {
                       onChange={formik.handleChange}
                       value={formik.values.body}
                       autoFocus
+                      fullWidth
                       label="Write something..."
                       className={classes.textField}
                       InputProps={{
@@ -214,5 +216,6 @@ function ChatPlace(): JSX.Element {
     </>
   );
 }
+
 
 export default ChatPlace;
