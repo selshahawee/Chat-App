@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     overflow: "auto",
     padding: "5px",
     marginTop: "35px",
-    marginLeft: "40px",
+    // marginLeft: "40px",
     borderRadius: "35px",
     
   },
@@ -54,7 +54,10 @@ const useStyles = makeStyles({
   inputBox: {
     // justifyContent: "flex-end",
     marginTop: "10px",
-    marginLeft: "350px",
+    // marginLeft: "350px",
+  },
+  inputBoxGrid:{
+    flexGrow: 1,
   },
 
   textField: {
@@ -130,11 +133,10 @@ function ChatPlace(): JSX.Element {
   }); 
 
   return (
-
- 
     <>
       <Grid container spacing={4} justifyContent="center">
-        <Grid item xs={3} sm={6} md={3} className={classes.contacts}>
+        <Grid item sm={false} md={1} />
+        <Grid item xs={3} sm={6} md={4} className={classes.contacts}>
           <Typography variant="h6" gutterBottom>
             Messages
           </Typography>
@@ -156,10 +158,9 @@ function ChatPlace(): JSX.Element {
             <Typography>No Messages</Typography>
           )}
         </Grid>
-        
-        <Grid item xs={9} sm={6} md={9}>
+
+        <Grid item xs={9} sm={6} md={6}>
           <Grid container direction="column">
-          
             <Grid item className={classes.chatBox}>
               {currentChat ? (
                 currentChat.messages.length &&
@@ -173,13 +174,12 @@ function ChatPlace(): JSX.Element {
                 <Typography>No Chat</Typography>
               )}
             </Grid>
-          
-            <Grid item >
+
+            <Grid item>
               <Grid container justifyContent="center" alignItems="center">
-                <Grid item>
+                <Grid item className={classes.inputBoxGrid}>
                   <Box
                     component="form"
-                    
                     // as="form"
                     onSubmit={(e) =>
                       formik.handleSubmit(e as React.FormEvent<HTMLFormElement>)
@@ -210,8 +210,8 @@ function ChatPlace(): JSX.Element {
               </Grid>
             </Grid>
           </Grid>
-          </Grid>
-        
+        </Grid>
+        <Grid item sm={false} md={1} />
       </Grid>
     </>
   );
