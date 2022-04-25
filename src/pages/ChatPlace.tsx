@@ -12,13 +12,13 @@ import SendIcon from "@material-ui/icons/Send";
 import Box from "@material-ui/core/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Message from "../components/Message";
-
+import Slide from '@mui/material/Slide';
 import { io } from "socket.io-client";
-
+import PropTypes from 'prop-types';
 import { getConvoAPI, getMessagesAPI,sendChatMessage } from "../api";
 import ConversationComp from "../components/Conversation";
 import { Conversation } from "../types";
-import { IconButton } from "@mui/material";
+import { IconButton, useScrollTrigger } from "@mui/material";
 
 const useStyles = makeStyles({
   contacts: {
@@ -31,12 +31,14 @@ const useStyles = makeStyles({
   chatBox: {
     border: "2px #ffffff solid",
     backgroundColor: "white",
-    height: "75vh",
-
+    height: "100%",
+    flexWrap: "nowrap",
+    
     padding: "5px",
     marginTop: "35px",
     marginLeft: "40px",
     borderRadius: "35px",
+    
   },
   input: {
     marginRight: "50px",
@@ -63,7 +65,8 @@ const useStyles = makeStyles({
 });
 
 function ChatPlace(): JSX.Element {
- 
+
+  
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.app.user);
   const conversation = useSelector(
@@ -133,6 +136,8 @@ function ChatPlace(): JSX.Element {
   }); 
 
   return (
+
+ 
     <>
       <Grid container spacing={4} justifyContent="center">
         <Grid item sm={5} md={3} className={classes.contacts}>
@@ -157,9 +162,10 @@ function ChatPlace(): JSX.Element {
             <Typography>No Messages</Typography>
           )}
         </Grid>
-
+        
         <Grid item xs={12} sm={6} md={7}>
           <Grid container direction="column">
+          
             <Grid className={classes.chatBox}>
               {currentChat ? (
                 currentChat.messages.length &&
@@ -173,7 +179,7 @@ function ChatPlace(): JSX.Element {
                 <Typography>No Chat</Typography>
               )}
             </Grid>
-
+          
             <Grid item sm={4} md={8}>
               <Grid container justifyContent="center" alignItems="center">
                 <Grid item>
@@ -209,7 +215,8 @@ function ChatPlace(): JSX.Element {
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+          </Grid>
+        
       </Grid>
     </>
   );
