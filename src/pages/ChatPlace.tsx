@@ -29,9 +29,9 @@ const useStyles = makeStyles({
   chatBox: {
     border: "2px #ffffff solid",
     backgroundColor: "white",
-    height: "100%",
+    height: "80vh",
     flexWrap: "nowrap",
-    
+    overflow: "auto",
     padding: "5px",
     marginTop: "35px",
     marginLeft: "40px",
